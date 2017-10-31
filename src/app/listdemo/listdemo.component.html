@@ -2,7 +2,7 @@
   <li *ngFor="let ev of events">
     <!--<img src="{{ valamienvaltozom }}">-->
     <img src="{{ev.pic}}" alt="" width="50px" height="50px">
-    {{ ev.name | uppercase }}
+    {{ ev.name | uppercase | azenpipeom: 3 }}
     <button (click)="edit(ev.id)">Edit</button>
     <button (click)="delete(ev.id)">Remove</button>
   </li>
