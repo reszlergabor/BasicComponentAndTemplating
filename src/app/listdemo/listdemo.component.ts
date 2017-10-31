@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {EventModel} from "./event-model";
+import {EventModel} from './event-model';
 
 
 @Component({
@@ -10,6 +10,7 @@ import {EventModel} from "./event-model";
 export class ListdemoComponent {
 
   events: EventModel[];
+  modifyEvent: EventModel;
 
   // valamienvaltozom = alert('miau');
 
@@ -35,20 +36,50 @@ export class ListdemoComponent {
     console.log('megjott a listdemo cmp');
     // const puf = this.events.reduce((x: EventModel, y:EventModel) => {
     //   return x.id > y.id ? x : y;
-      // if (x.id > y.id) {
-      //   return x;
-      // } else {
-      //   return y;
-      // }
+    // if (x.id > y.id) {
+    //   return x;
+    // } else {
+    //   return y;
+    // }
     // }).id;
     // console.log(puf);
+    this.modifyEvent = new EventModel('');
   }
 
-  add(newEventNameInput: HTMLInputElement, newEventInputPic: HTMLInputElement) {
-    const maxId = this.events.reduce((x, y) => x.id > y.id ? x : y).id;
-    this.events = [...this.events, new EventModel(maxId+1, newEventNameInput.value, newEventInputPic.value)];
-    newEventNameInput.value = "";
-    newEventInputPic.value = "";
+  save(newEventNameInput: HTMLInputElement, newEventInputPic: HTMLInputElement) {
+    if (this.modifyEvent.id === 0) {
+      // itt tudjuk hogy uj elemet akarunk letrehozni, hiszen biztositjuk
+      // mindenhol mashol, hogy ha nem szerkesztunk, akkor az id 0 legyen
+      const maxId = this.events.reduce((x, y) => x.id > y.id ? x : y).id;
+      this.events = [...this.events, new EventModel(newEventNameInput.value, maxId + 1, newEventInputPic.value)];
+    } else {
+      // itt tudjuk, hogy edit szakasz van, azaz meg kell kersni a megfelelo elemet az id alapjan
+      this.events = this.events.map((ev) => {
+        if (ev.id === this.modifyEvent.id){
+          // itt tudjuk, hogy ezt az elemet kellszerkeszteni
+          return {
+            id: ev.id,
+            name: newEventNameInput.value,
+            pic: newEventInputPic.value
+          };
+        } else {
+          // itt tudjuk, hgy nem akarunk modositani
+          return ev;
+        }
+      });
+      // takaritsunk fel magunk utan
+      this.modifyEvent = new EventModel('');
+
+    }
+    newEventNameInput.value = '';
+    newEventInputPic.value = '';
+  }
+
+  edit(id: number) {
+    // Ha biztos hogy van ilyen
+    // ha tudom, hogy mindig CSAK 1 ilyen van
+    this.modifyEvent = this.events.filter((ev) => ev.id === id)[0];
+
   }
 
   delete(id: number) {

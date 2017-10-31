@@ -3,20 +3,20 @@
     <!--<img src="{{ valamienvaltozom }}">-->
     <img src="{{ev.pic}}" alt="" width="50px" height="50px">
     {{ ev.name }}
-
+    <button (click)="edit(ev.id)">Edit</button>
     <button (click)="delete(ev.id)">Remove</button>
   </li>
 </ul>
 
 <div>
   <label for="eventname">Uj esemeny neve:</label>
-  <input type="text" #newEventNameInput id="eventname">
+  <input type="text" #newEventNameInput id="eventname" [value]="modifyEvent.name">
 </div>
 <br>
 <div>
   <label for="eventpic">Uj esemenyhez tartozo kep URL:</label>
-  <input type="text" #newEventPicInput id="eventpic">
-  <button (click)="add(newEventNameInput, newEventPicInput)">Save</button>
+  <input type="text" #newEventPicInput id="eventpic" [value]="modifyEvent.pic">
+  <button (click)="save(newEventNameInput, newEventPicInput)">Save</button>
 </div>
 
 <pre>
