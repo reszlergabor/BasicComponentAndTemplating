@@ -50,8 +50,13 @@ export class ListdemoComponent {
     if (this.modifyEvent.id === 0) {
       // itt tudjuk hogy uj elemet akarunk letrehozni, hiszen biztositjuk
       // mindenhol mashol, hogy ha nem szerkesztunk, akkor az id 0 legyen
-      const maxId = this.events.reduce((x, y) => x.id > y.id ? x : y).id;
-      this.events = [...this.events, new EventModel(newEventNameInput.value, maxId + 1, newEventInputPic.value)];
+      if (this.events.length === 0) {
+        console.log('ures');
+        this.events = [...this.events, new EventModel(newEventNameInput.value, 1, newEventInputPic.value)];
+      } else {
+        const maxId = this.events.reduce((x, y) => x.id > y.id ? x : y).id;
+        this.events = [...this.events, new EventModel(newEventNameInput.value, maxId + 1, newEventInputPic.value)];
+      }
     } else {
       // itt tudjuk, hogy edit szakasz van, azaz meg kell kersni a megfelelo elemet az id alapjan
       this.events = this.events.map((ev) => {
